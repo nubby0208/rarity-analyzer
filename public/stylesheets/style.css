@@ -16,9 +16,9 @@
   --white: #FFFFFF;
   --gray: var(--gray-400);
   --black: #000000;
-  --primary: #FF04B4;
+  --primary: #ff0404;
   --primary-dark: #1D1B28;
-  --contrast: #0062F9;
+  --contrast: #3f3f3f;
   --danger: #EF4444;
   --red: #F87171;
   --semi-white: rgba(255, 255, 255, 0.2);
