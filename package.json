@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Rarity analyser for NFT metadata collection",
   "main": "app.js",
-  "author": "Fukuball",
+  "author": "Nas",
   "license": "MIT",
   "scripts": {
     "start": "NODE_ENV=production node ./bin/www",
