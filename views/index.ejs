@@ -17,7 +17,12 @@
     <div class="container d-flex w-100 p-3 mx-auto flex-column" style="min-height: 100%; max-width: 72em;">
       <%- include('./component/header'); -%>
       <main class="px-3" style="min-height: 100%;">
-        <h1 class="superbig upper text-center"><%= collection_name %></h1>
+        <div>
+          <img class="logo" src="/images/logo.png" />
+      
+          <h1 class="superbig upper text-center"><%= collection_name %></h1>
+      
+      </div>
         <form class="search text-center">
           <fieldset>
             <input class="search-text-input" type="text" name="search" placeholder="Search by ID..." value="<%= search %>">
