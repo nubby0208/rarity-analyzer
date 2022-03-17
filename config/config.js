@@ -13,7 +13,7 @@ const config = {
     item_path_name: 'punk',
     page_item_num: 60,
     content_image_is_video: false,
-    content_image_frame: 'circle', // circle, rectangle
+    content_image_frame: 'rectangle', // circle, rectangle
     use_wallet: false
 };
 
