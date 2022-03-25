@@ -6,7 +6,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
+var collectionsRouter = require('./routes/collections');
 var punksRouter = require('./routes/punks');
 
 var app = express();
@@ -38,7 +38,8 @@ app.locals.content_image_frame = config.content_image_frame;
 app.locals.item_path_name = config.item_path_name;
 app.locals.use_wallet = config.use_wallet;
 
-app.use('/', indexRouter);
+
+app.use('/', collectionsRouter);
 app.use('/'+config.item_path_name, punksRouter);
 
 // catch 404 and forward to error handler

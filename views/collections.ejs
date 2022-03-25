@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <%- 
+    include('./component/meta', {
+      appTitle: appTitle, 
+      appDescription: appDescription, 
+      ogTitle: ogTitle, 
+      ogDescription: ogDescription, 
+      ogUrl: ogUrl, 
+      ogImage: ogImage
+    }); 
+    -%>
+  </head>
+  <body class="d-flex text-white bg-dark" style="min-height: 100%;">
+    
+    <div class="container d-flex w-100 p-3 mx-auto flex-column" style="min-height: 100%; max-width: 72em;">
+      <%- include('./component/header'); -%>
+      <main class="px-3" style="min-height: 100%;">
+        <div>
+      
+          <h1 class="superbig upper text-center"><%= collection_name %></h1>
+      
+      </div>
+       
+        <h3 class="mb-4">FEATURED COLLECTIONS</h3>
+        
+        <div class="row punks">
+          <% if (!_.isEmpty(punks)) { %>
+            <% punks.forEach(function(punk) { %>
+              <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-5" style="padding-left: 30px; padding-right: 30px;">
+                <%- include('./component/punk', {punk: punk, trait_normalization: useTraitNormalization}); -%>
+              </div>
+            <% }); %>
+          <% } else { %>
+          <h1 class="text-center">
+            There's no result.
+          </h1>
+          <% } %>
+        </div>
+        <%- 
+        include('./component/paginate', {
+          totalPage: totalPage, 
+          page: page, 
+          path: '/?search='+search+'&traits='+traits+'&trait_normalization='+useTraitNormalization+'&order_by='+orderBy
+        }); 
+        -%>
+      </main>
+      <%- include('./component/footer'); -%>
+    </div>
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+
+        const traitSelects = document.querySelectorAll('.trait-select');
+
+        function getSelectedTraits() {
+          let selectedTraits = [];
+          traitSelects.forEach(function(traitSelect) {
+            if (!traitSelect.value.includes('_All')) {
+              selectedTraits.push(traitSelect.value);
+            }
+          });
+          return selectedTraits;
+        }
+
+        const sortingSelect = document.querySelector('#sorting-select');
+      
+        if (sortingSelect) {
+          sortingSelect.addEventListener('change', async (event) => {
+            const sorting = event.target.value;
+            window.location = '/?search=<%= search %>&traits=<%= traits %>&trait_normalization=<%= useTraitNormalization %>&order_by='+sorting;
+          });
+        }
+
+        const traitNormalizationSwitch = document.querySelector('#traitNormalization');
+        if (traitNormalizationSwitch) {
+          traitNormalizationSwitch.addEventListener('change', async (event) => {
+            const useTraitNormalization = event.target.checked;
+            if (useTraitNormalization) {
+              window.location = '/?search=<%= search %>&traits=<%= traits %>&trait_normalization=1&order_by=<%= orderBy %>';
+            } else {
+              window.location = '/?search=<%= search %>&traits=<%= traits %>&trait_normalization=0&order_by=<%= orderBy %>';
+            }
+          });
+        }
+
+        let isChanged = false;
+        if (traitSelects) {
+          traitSelects.forEach(function(traitSelect) {
+            traitSelect.addEventListener('change', async (event) => {
+              const traitSelectedValue = event.target.value;
+              let selectedNum = 0;
+              traitSelects.forEach(function(traitSelect) {
+                if (!traitSelect.value.includes('_All')) {
+                  selectedNum = selectedNum + 1;  
+                }
+              });
+              document.getElementById("trait-fileter-selected-num").innerHTML = selectedNum;
+              isChanged = true;
+            });
+          }); 
+        }
+
+        const traitFilterOffcanvas = document.getElementById('traitFilterOffcanvas')
+        traitFilterOffcanvas.addEventListener('hidden.bs.offcanvas', function () {
+          if (traitSelects && isChanged) {
+            let selectedTraits = getSelectedTraits();
+            if (selectedTraits.length != 0) {
+              window.location = '/?search=<%= search %>&traits='+selectedTraits.join(',')+'&trait_normalization=<%= useTraitNormalization %>&order_by=<%= orderBy %>';
+            } else {
+              window.location = '/?search=<%= search %>&trait_normalization=<%= useTraitNormalization %>&order_by=<%= orderBy %>';
+            }
+          }
+        });
+      });
+    </script> 
+  </body>
+</html>
