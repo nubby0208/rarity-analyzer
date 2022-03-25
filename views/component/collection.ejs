@@ -1,33 +1,33 @@
 <%
-let tokenItemUrl = punk.id;
+let tokenCollectionUrl = collection.id;
 if (trait_normalization == 1) {
-  tokenItemUrl = punk.id+'?trait_normalization=1';
+  tokenCollectionUrl = collection.id+'?trait_normalization=1';
 }
 %>
-<a href="./routes/index" style="text-decoration: none;">
+<a href="/<%= collection_path_name %>/<%= tokenCollectionUrl %>" style="text-decoration: none;">
   <div>
-    <% if (punk.rarity_rank) { %>
-    <h3 class="punk-rank">Rank #<%= punk.rarity_rank %></h3>
+    <% if (collection.rarity_rank) { %>
+    <h3 class="punk-rank">Rank #<%= collection.rarity_rank %></h3>
     <% } %>
-    <% if (punk.similar) { %>
-    <h3 class="punk-similar-score">Similar Score #<%= punk.similar.toFixed(2) %></h3>
+    <% if (collection.similar) { %>
+    <h3 class="punk-similar-score">Similar Score #<%= collection.similar.toFixed(2) %></h3>
     <% } %>
     <% if (content_image_is_video) { %>
-    <video class="punk-avatar" style="<% if (content_image_frame=='rectangle') { %> border-radius: 10px; <% } %>" src="<%= punk.image.replace('ipfs://', 'https://ipfs.io/ipfs/'); %>" alt="<%= punk.name %>" /></video>
+    <video class="punk-avatar" style="<% if (content_image_frame=='rectangle') { %> border-radius: 10px; <% } %>" src="<%= collection.image.replace('ipfs://', 'https://ipfs.io/ipfs/'); %>" alt="<%= collection.name %>" /></video>
     <% } else { %>
-    <img class="punk-avatar" style="<% if (content_image_frame=='rectangle') { %> border-radius: 10px; <% } %>" src="<%= punk.image.replace('ipfs://', 'https://ipfs.io/ipfs/'); %>" alt="<%= punk.name %>" />
+    <img class="punk-avatar" style="<% if (content_image_frame=='rectangle') { %> border-radius: 10px; <% } %>" src="<%= collection.image.replace('ipfs://', 'https://ipfs.io/ipfs/'); %>" alt="<%= collection.name %>" />
     <% } %>
     <div class="punk-info text-center">
-      <span><%= punk.name %></span>
+      <span><%= collection.name %></span>
       <svg 
         viewBox="0 0 128 20" 
         class="shadow"
         style="transform: 
-          <% if (punk.id % 4 == 0) { %> 
+          <% if (collection.id % 4 == 0) { %> 
           rotate(2.10582deg) 
-          <% } else if (punk.id % 4 == 1) { %> 
+          <% } else if (collection.id % 4 == 1) { %> 
           rotate(-1.55956deg) 
-          <% } else if (punk.id % 4 == 2) { %> 
+          <% } else if (collection.id % 4 == 2) { %> 
           rotate(-2.11894deg) 
           <% } else { %> 
           rotate(-0.804652deg) 
@@ -39,11 +39,11 @@ if (trait_normalization == 1) {
       <svg 
         viewBox="0 0 128 20" 
         style="transform: 
-          <% if (punk.id % 4 == 0) { %> 
+          <% if (collection.id % 4 == 0) { %> 
           rotate(2.10582deg) 
-          <% } else if (punk.id % 4 == 1) { %> 
+          <% } else if (collection.id % 4 == 1) { %> 
           rotate(-1.55956deg) 
-          <% } else if (punk.id % 4 == 2) { %> 
+          <% } else if (collection.id % 4 == 2) { %> 
           rotate(-2.11894deg) 
           <% } else { %> 
           rotate(-0.804652deg) 

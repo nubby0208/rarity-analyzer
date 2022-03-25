@@ -18,18 +18,16 @@
       <%- include('./component/header'); -%>
       <main class="px-3" style="min-height: 100%;">
         <div>
-      
           <h1 class="superbig upper text-center"><%= collection_name %></h1>
-      
       </div>
        
         <h3 class="mb-4">FEATURED COLLECTIONS</h3>
         
         <div class="row punks">
-          <% if (!_.isEmpty(punks)) { %>
-            <% punks.forEach(function(punk) { %>
+          <% if (!_.isEmpty(collections)) { %>
+            <% collections.forEach(function(collection { %>
               <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-5" style="padding-left: 30px; padding-right: 30px;">
-                <%- include('./component/punk', {punk: punk, trait_normalization: useTraitNormalization}); -%>
+                <%- include('./component/collection', {collection: collection}); -%>
               </div>
             <% }); %>
           <% } else { %>
@@ -42,7 +40,7 @@
         include('./component/paginate', {
           totalPage: totalPage, 
           page: page, 
-          path: '/?search='+search+'&traits='+traits+'&trait_normalization='+useTraitNormalization+'&order_by='+orderBy
+          path: '/?search='+search+'&order_by='+orderBy
         }); 
         -%>
       </main>
