@@ -68,9 +68,9 @@ collectionsData.forEach(collection => {
     if (_.isEmpty(collection.name)) {
         collection['name'] = config.collection_name + ' #' + collection.id;
     }
-    if (!collection.name.includes('#'+collection.id)) {
-        collection['name'] = collection['name'] + ' #' + (collections_count1 + config.collection_id_from);
-    }
+    // if (!collection.name.includes('#'+collection.id)) {
+    //     collection['name'] = collection['name'] + ' #' + (collections_count1 + config.collection_id_from);
+    // }
     if (_.isEmpty(collection.description)) {
         collection['description'] = '';
     }
@@ -84,7 +84,7 @@ collectionsData.forEach(collection => {
         collection['animation_url'] = '';
     }
 
-    console.log("Prepare collection: #" + collection.name);
+    console.log("Prepare collection: #" + collection.id);
     
     insertCollectionStmt.run(collection.id, collection.name, collection.title, collection.description, collection.image, collection.external_url, collection.animation_url);
 
