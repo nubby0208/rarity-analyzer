@@ -143,10 +143,10 @@ collectionsData.forEach(collection => {
         ")"
     );
     
-    let insertPunkStmt = db.prepare("INSERT INTO "+collection.name+"punks VALUES (?, ?, ?, ?, ?, ?)");
-    let insertTraitTypeStmt = db.prepare("INSERT INTO "+collection.name+"trait_types VALUES (?, ?, ?, ?)");
-    let insertTraitDetailTypeStmt = db.prepare("INSERT INTO "+collection.name+"trait_detail_types VALUES (?, ?, ?, ?)");
-    let insertPuntTraitStmt = db.prepare("INSERT INTO "+collection.name+"punk_traits VALUES (?, ?, ?, ?)");
+    let insertPunkStmt = db.prepare("INSERT INTO "+collection.name+"_punks VALUES (?, ?, ?, ?, ?, ?)");
+    let insertTraitTypeStmt = db.prepare("INSERT INTO "+collection.name+"_trait_types VALUES (?, ?, ?, ?)");
+    let insertTraitDetailTypeStmt = db.prepare("INSERT INTO "+collection.name+"_trait_detail_types VALUES (?, ?, ?, ?)");
+    let insertPuntTraitStmt = db.prepare("INSERT INTO "+collection.name+"_punk_traits VALUES (?, ?, ?, ?)");
     
     //nubby
     

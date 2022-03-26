@@ -29,12 +29,19 @@ if (mode != 'force') {
     }
 }
 
-let allTraitTypes = db.prepare('SELECT trait_types.* FROM trait_types').all();
-let allTraitTypeCount = db.prepare('SELECT trait_type_id, COUNT(trait_type_id) as trait_type_count, SUM(punk_count) trait_type_sum FROM trait_detail_types GROUP BY trait_type_id').all();
-let traitCountNum = db.prepare('SELECT COUNT(*) as trait_count_num FROM punk_trait_counts').get().trait_count_num;
-let traitCounts = db.prepare('SELECT * FROM punk_trait_counts').all();
-let totalSupply = db.prepare('SELECT COUNT(punks.id) as punk_total FROM punks').get().punk_total;
-let allTraits = db.prepare('SELECT trait_types.trait_type, trait_detail_types.trait_detail_type, trait_detail_types.punk_count, trait_detail_types.trait_type_id, trait_detail_types.id trait_detail_type_id  FROM trait_detail_types INNER JOIN trait_types ON (trait_detail_types.trait_type_id = trait_types.id) ORDER BY trait_types.trait_type, trait_detail_types.trait_detail_type').all();
+
+let allCollections = db.prepare('SELECT collections.* FROM collections').all();
+allCollections.forEach(collection => {
+
+    
+
+
+let allTraitTypes = db.prepare('SELECT trait_types.* FROM '+collection.name+'_trait_types').all();
+let allTraitTypeCount = db.prepare('SELECT trait_type_id, COUNT(trait_type_id) as trait_type_count, SUM(punk_count) trait_type_sum FROM '+collection.name+'_trait_detail_types GROUP BY trait_type_id').all();
+let traitCountNum = db.prepare('SELECT COUNT(*) as trait_count_num FROM '+collection.name+'_punk_trait_counts').get().trait_count_num;
+let traitCounts = db.prepare('SELECT * FROM '+collection.name+'_punk_trait_counts').all();
+let totalSupply = db.prepare('SELECT COUNT(punks.id) as punk_total FROM '+collection.name+'_punks').get().punk_total;
+let allTraits = db.prepare('SELECT trait_types.trait_type, trait_detail_types.trait_detail_type, trait_detail_types.punk_count, trait_detail_types.trait_type_id, trait_detail_types.id trait_detail_type_id  FROM '+collection.name+'_trait_detail_types INNER JOIN trait_types ON (trait_detail_types.trait_type_id = trait_types.id) ORDER BY trait_types.trait_type, trait_detail_types.trait_detail_type').all();
 
 let traitTypeCountSum = 0 + traitCountNum;
 let traitTypeNum = 0 + 1;
@@ -44,7 +51,7 @@ let traitTypeCountNum = [];
 let traitTypeValueCount = [];
 allTraitTypeCount.forEach(traitTypeCount => {
 
-    let thisTraitType = db.prepare('SELECT trait_types.* FROM trait_types WHERE id = ?').get(traitTypeCount.trait_type_id);
+    let thisTraitType = db.prepare('SELECT trait_types.* FROM '+collection.name+'_trait_types WHERE id = ?').get(traitTypeCount.trait_type_id);
     if (ignoreTraits.includes(thisTraitType.trait_type.toLowerCase())) {
         traitTypeRarityScoreSum[traitTypeCount.trait_type_id] = 0;
         traitTypeCountNum[traitTypeCount.trait_type_id] = 0;
@@ -93,8 +100,8 @@ console.log(meanValueCount);
 console.log(traitTypeMeanRarity);
 console.log(meanRarity);
 
-let createScoreTableStmt = "CREATE TABLE normalized_punk_scores ( id INT, punk_id INT, ";
-let insertPunkScoreStmt = "INSERT INTO normalized_punk_scores VALUES (:id, :punk_id, ";
+let createScoreTableStmt = "CREATE TABLE "+collection.name+"_normalized_punk_scores ( id INT, punk_id INT, ";
+let insertPunkScoreStmt = "INSERT INTO "+collection.name+"_normalized_punk_scores VALUES (:id, :punk_id, ";
 
 allTraitTypes.forEach(traitType => {
     createScoreTableStmt = createScoreTableStmt + "trait_type_" + traitType.id + "_percentile DOUBLE, trait_type_" + traitType.id + "_rarity DOUBLE, trait_type_" + traitType.id + "_value TEXT, ";
@@ -107,7 +114,7 @@ insertPunkScoreStmt = insertPunkScoreStmt + ":trait_count,  :trait_count_percent
 db.exec(createScoreTableStmt);
 insertPunkScoreStmt = db.prepare(insertPunkScoreStmt);
 
-let punkScores = db.prepare('SELECT * FROM punk_scores').all();
+let punkScores = db.prepare('SELECT * FROM '+collection.name+'_punk_scores').all();
 
 punkScores.forEach(punkScore => {
 
@@ -173,9 +180,9 @@ punkScores.forEach(punkScore => {
     insertPunkScoreStmt.run(normalizedPunkScore);
 });
 
-const punkScoreStmt = db.prepare('SELECT rarity_sum FROM normalized_punk_scores WHERE punk_id = ?');
-const punkRankStmt = db.prepare('SELECT COUNT(id) as higherRank FROM normalized_punk_scores WHERE rarity_sum > ?');
-let updatPunkRankStmt = db.prepare("UPDATE normalized_punk_scores SET rarity_rank = :rarity_rank WHERE punk_id = :punk_id");
+const punkScoreStmt = db.prepare('SELECT rarity_sum FROM '+collection.name+'_normalized_punk_scores WHERE punk_id = ?');
+const punkRankStmt = db.prepare('SELECT COUNT(id) as higherRank FROM '+collection.name+'_normalized_punk_scores WHERE rarity_sum > ?');
+let updatPunkRankStmt = db.prepare("UPDATE "+collection.name+"_normalized_punk_scores SET rarity_rank = :rarity_rank WHERE punk_id = :punk_id");
 
 punkScores.forEach(punkScore => {
     console.log("Normalized ranking punk: #" + punkScore.punk_id);
@@ -186,3 +193,5 @@ punkScores.forEach(punkScore => {
         punk_id: punkScore.punk_id
     });
 });
+});
+
