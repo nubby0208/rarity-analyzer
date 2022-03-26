@@ -20,7 +20,6 @@ const db = new Database(databasePath);
 router.get('/', function(req, res, next) {
 
   let search = req.query.search;
-  let traits = req.query.traits;
   let useTraitNormalization = req.query.trait_normalization;
   let orderBy = req.query.order_by;
   let page = req.query.page;
@@ -32,51 +31,7 @@ router.get('/', function(req, res, next) {
     search = '';
   }
 
-  if (_.isEmpty(traits)) {
-    traits = '';
-  }
-
-  let scoreTable = 'punk_scores';
-  if (useTraitNormalization == '1') {
-    useTraitNormalization = '1';
-    scoreTable = 'normalized_punk_scores';
-  } else {
-    useTraitNormalization = '0';
-  }
-
-  if (orderBy == 'rarity' || orderBy == 'id') {
-    orderBy = orderBy;
-  } else {
-    orderBy = 'rarity';
-  }
-
-  if (!_.isEmpty(page)) {
-    page = parseInt(page);
-    if (!isNaN(page)) {
-      offset = (Math.abs(page) - 1) * limit;
-    } else {
-      page = 1;
-    }
-  } else {
-    page = 1;
-  }
-
-  let selectedTraits = (traits != '') ? traits.split(',') : [];
-  let totalPunkCount = 0
-  let collections = null;
-  let orderByStmt = '';
-  if (orderBy == 'rarity') {
-    orderByStmt = 'ORDER BY '+scoreTable+'.rarity_rank ASC';
-  } else {
-    orderByStmt = 'ORDER BY collections.id ASC';
-  }
-
   let totalCollectionCount = db.prepare('SELECT COUNT(collections.id) as collection_total FROM collections').get().collection_total;
-  let allTraitTypes = db.prepare('SELECT trait_types.* FROM trait_types').all();
-  let allTraitTypesData = {};
-  allTraitTypes.forEach(traitType => {
-    allTraitTypesData[traitType.trait_type] = traitType.punk_count;
-  });
 
   let collectionsQuery = 'SELECT collections.* FROM collections';
   

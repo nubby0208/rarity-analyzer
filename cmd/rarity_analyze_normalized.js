@@ -118,7 +118,7 @@ let punkScores = db.prepare('SELECT * FROM '+collection.name+'_punk_scores').all
 
 punkScores.forEach(punkScore => {
 
-    console.log("Normalize punk: #" + punkScore.id);
+    console.log("Normalize punk: #"+ collection.id+" #" + punkScore.id);
 
     let raritySum = 0;
     let normalizedPunkScore = {};
