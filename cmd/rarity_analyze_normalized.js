@@ -185,7 +185,7 @@ const punkRankStmt = db.prepare('SELECT COUNT(id) as higherRank FROM '+collectio
 let updatPunkRankStmt = db.prepare("UPDATE "+collection.name+"_normalized_punk_scores SET rarity_rank = :rarity_rank WHERE punk_id = :punk_id");
 
 punkScores.forEach(punkScore => {
-    console.log("Normalized ranking punk: #"+collection.id+" #:" + punkScore.punk_id);
+    console.log("Normalized ranking punk: #"+collection.id+" #" + punkScore.punk_id);
     let normalizedPunkScore = punkScoreStmt.get(punkScore.punk_id);
     let punkRank = punkRankStmt.get(normalizedPunkScore.rarity_sum);
     updatPunkRankStmt.run({

@@ -180,7 +180,7 @@ collectionsData.forEach(collection => {
             element['animation_url'] = '';
         }
     
-        console.log("Prepare punk: #"+collection.id+" #" + element.name);
+        console.log("Prepare punk: #"+collection.id+" #" + element.id);
         
         insertPunkStmt.run(element.id, element.name, element.description, element.image, element.external_url, element.animation_url);
     
