@@ -17,6 +17,11 @@ if (!fs.existsSync(databasePath)) {
 const db = new Database(databasePath);
 
 let collectionName = "DNAHEDERA";
+let punksTable = collectionName+"_"+"punks";
+let trait_typesTable = collectionName+"_"+"trait_types";
+let trait_detail_typesTable = collectionName+"_"+"trait_detail_types";
+let punk_trait_countsTable = collectionName+"_"+"punk_trait_counts";
+let scoreTable = collectionName+"_"+'punk_scores';
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -38,12 +43,7 @@ router.get('/', function(req, res, next) {
     traits = '';
   }
 
-  let punksTable = collectionName+"_"+"punks";
-  let trait_typesTable = collectionName+"_"+"trait_types";
-  let trait_detail_typesTable = collectionName+"_"+"trait_detail_types";
-  let punk_trait_countsTable = collectionName+"_"+"punk_trait_counts";
-
-  let scoreTable = collectionName+"_"+'punk_scores';
+  
   if (useTraitNormalization == '1') {
     useTraitNormalization = '1';
     scoreTable = collectionName+"_"+'normalized_punk_scores';
