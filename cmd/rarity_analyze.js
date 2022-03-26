@@ -84,7 +84,7 @@ collectionsData.forEach(collection => {
         collection['animation_url'] = '';
     }
 
-    console.log("Prepare collection: #" + collection.id);
+    console.log("Prepare collection: #" + collection.name);
     
     insertCollectionStmt.run(collection.id, collection.name, collection.title, collection.description, collection.image, collection.external_url, collection.animation_url);
 
@@ -180,7 +180,7 @@ collectionsData.forEach(collection => {
             element['animation_url'] = '';
         }
     
-        console.log("Prepare punk: #" + element.id);
+        console.log("Prepare punk: #   " + element.name);
         
         insertPunkStmt.run(element.id, element.name, element.description, element.image, element.external_url, element.animation_url);
     
