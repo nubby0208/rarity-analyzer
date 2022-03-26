@@ -36,12 +36,12 @@ allCollections.forEach(collection => {
     
 
 
-let allTraitTypes = db.prepare('SELECT trait_types.* FROM '+collection.name+'_trait_types').all();
+let allTraitTypes = db.prepare('SELECT '+collection.name+'_trait_types.* FROM '+collection.name+'_trait_types').all();
 let allTraitTypeCount = db.prepare('SELECT trait_type_id, COUNT(trait_type_id) as trait_type_count, SUM(punk_count) trait_type_sum FROM '+collection.name+'_trait_detail_types GROUP BY trait_type_id').all();
 let traitCountNum = db.prepare('SELECT COUNT(*) as trait_count_num FROM '+collection.name+'_punk_trait_counts').get().trait_count_num;
 let traitCounts = db.prepare('SELECT * FROM '+collection.name+'_punk_trait_counts').all();
 let totalSupply = db.prepare('SELECT COUNT(punks.id) as punk_total FROM '+collection.name+'_punks').get().punk_total;
-let allTraits = db.prepare('SELECT trait_types.trait_type, trait_detail_types.trait_detail_type, trait_detail_types.punk_count, trait_detail_types.trait_type_id, trait_detail_types.id trait_detail_type_id  FROM '+collection.name+'_trait_detail_types INNER JOIN trait_types ON (trait_detail_types.trait_type_id = trait_types.id) ORDER BY trait_types.trait_type, trait_detail_types.trait_detail_type').all();
+let allTraits = db.prepare('SELECT '+collection.name+'_trait_types.trait_type, '+collection.name+'_trait_detail_types.trait_detail_type, '+collection.name+'_trait_detail_types.punk_count, '+collection.name+'_trait_detail_types.trait_type_id, '+collection.name+'_trait_detail_types.id trait_detail_type_id  FROM '+collection.name+'_trait_detail_types INNER JOIN '+collection.name+'_trait_types ON ('+collection.name+'_trait_detail_types.trait_type_id = '+collection.name+'_trait_types.id) ORDER BY '+collection.name+'_trait_types.trait_type, '+collection.name+'_trait_detail_types.trait_detail_type').all();
 
 let traitTypeCountSum = 0 + traitCountNum;
 let traitTypeNum = 0 + 1;
@@ -51,7 +51,7 @@ let traitTypeCountNum = [];
 let traitTypeValueCount = [];
 allTraitTypeCount.forEach(traitTypeCount => {
 
-    let thisTraitType = db.prepare('SELECT trait_types.* FROM '+collection.name+'_trait_types WHERE id = ?').get(traitTypeCount.trait_type_id);
+    let thisTraitType = db.prepare('SELECT '+collection.name+'_trait_types.* FROM '+collection.name+'_trait_types WHERE id = ?').get(traitTypeCount.trait_type_id);
     if (ignoreTraits.includes(thisTraitType.trait_type.toLowerCase())) {
         traitTypeRarityScoreSum[traitTypeCount.trait_type_id] = 0;
         traitTypeCountNum[traitTypeCount.trait_type_id] = 0;
