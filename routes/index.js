@@ -75,10 +75,10 @@ router.get('/', function(req, res, next) {
   if (orderBy == 'rarity') {
     orderByStmt = 'ORDER BY '+scoreTable+'.rarity_rank ASC';
   } else {
-    orderByStmt = 'ORDER BY '+punkTable+'.id ASC';
+    orderByStmt = 'ORDER BY '+punksTable+'.id ASC';
   }
 
-  let totalSupply = db.prepare('SELECT COUNT('+punkTable+'.id) as punk_total FROM '+punkTable).get().punk_total;
+  let totalSupply = db.prepare('SELECT COUNT('+punksTable+'.id) as punk_total FROM '+punksTable).get().punk_total;
   let allTraitTypes = db.prepare('SELECT '+trait_typesTable+'.* FROM '+trait_typesTable).all();
   let allTraitTypesData = {};
   allTraitTypes.forEach(traitType => {
@@ -86,7 +86,7 @@ router.get('/', function(req, res, next) {
   });
 
   let allTraits = db.prepare('SELECT '+trait_typesTable+'.trait_type, '+trait_detail_typesTable+'.trait_detail_type, '+trait_typesTable+'.punk_count, '+trait_detail_typesTable+'.trait_type_id, '+trait_detail_typesTable+'.id trait_detail_type_id  FROM '+trait_detail_typesTable+' INNER JOIN '+trait_typesTable+' ON ('+trait_detail_typesTable+'.trait_type_id = '+trait_typesTable+'.id) WHERE '+trait_detail_typesTable+'.punk_count != 0 ORDER BY '+trait_typesTable+'.trait_type, '+trait_detail_typesTable+'.trait_detail_type').all();
-  let totalPunkCountQuery = 'SELECT COUNT('+punkTable+'.id) as punk_total FROM '+punkTable+' INNER JOIN '+scoreTable+' ON ('+punksTable+'.id = '+scoreTable+'.punk_id) ';
+  let totalPunkCountQuery = 'SELECT COUNT('+punksTable+'.id) as punk_total FROM '+punksTable+' INNER JOIN '+scoreTable+' ON ('+punksTable+'.id = '+scoreTable+'.punk_id) ';
   let punksQuery = 'SELECT '+punksTable+'.*, '+scoreTable+'.rarity_rank FROM '+punksTable+' INNER JOIN '+scoreTable+' ON ('+punksTable+'.id = '+scoreTable+'.punk_id) ';
   let totalPunkCountQueryValue = {};
   let punksQueryValue = {};
