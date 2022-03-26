@@ -165,7 +165,7 @@ collectionsData.forEach(collection => {
             element['id'] = count1;
         }
         if (_.isEmpty(element.name)) {
-            element['name'] = config.collection_name + ' #' + element.id;
+            element['name'] = collection.name + ' #' + element.id;
         }
         if (!element.name.includes('#'+element.id)) {
             element['name'] = element['name'] + ' #' + (count1 + config.collection_id_from);
