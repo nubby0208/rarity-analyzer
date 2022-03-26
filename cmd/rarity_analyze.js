@@ -90,7 +90,7 @@ collectionsData.forEach(collection => {
 
     db.exec(
         "CREATE TABLE "+
-            collection.name+"_punks"+
+            collection.name+"_punks "+
             "(" +
             "id INT, " +
             "name TEXT, " +
