@@ -90,7 +90,7 @@ collectionsData.forEach(collection => {
 
     db.exec(
         "CREATE TABLE "+
-            collection.name+"_punks "+
+            collection.name+"_punks"+
             "(" +
             "id INT, " +
             "name TEXT, " +
@@ -152,7 +152,7 @@ collectionsData.forEach(collection => {
     
 
     let count1 = config.collection_id_from;
-    const collectionData = require(appRoot + '/config/' + collection.name);
+    const collectionData = require(appRoot + '/config/' + collection.name +'.json');
     collectionData.forEach(element => {
     
         if (element.id != undefined) {
