@@ -155,7 +155,7 @@ router.get('/', function(req, res, next) {
 
   let totalPage =  Math.ceil(totalPunkCount/limit);
 
-  res.render('index', { 
+  res.render('index', {
     appTitle: config.app_name,
     appDescription: config.app_description,
     ogTitle: config.collection_name + ' | ' + config.app_name,

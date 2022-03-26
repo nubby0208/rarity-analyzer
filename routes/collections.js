@@ -28,7 +28,7 @@ router.get('/', function(req, res, next) {
   let limit = config.page_item_num;
   let totalPage =  Math.ceil(totalCollectionCount/limit);
 
-  res.render('index', {
+  res.render('collections', {
     appTitle: config.app_name,
     appDescription: config.app_description,
     ogTitle: config.collection_name + ' | ' + config.app_name,
