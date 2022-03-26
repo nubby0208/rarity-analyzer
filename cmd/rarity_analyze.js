@@ -68,9 +68,9 @@ collectionsData.forEach(collection => {
     if (_.isEmpty(collection.name)) {
         collection['name'] = config.collection_name + ' #' + collection.id;
     }
-    // if (!collection.name.includes('#'+collection.id)) {
-    //     collection['name'] = collection['name'] + ' #' + (collections_count1 + config.collection_id_from);
-    // }
+    if (!collection.name.includes('#'+collection.id)) {
+        collection['name'] = collection['name'] + ' #' + (collections_count1 + config.collections_id_from);
+    }
     if (_.isEmpty(collection.description)) {
         collection['description'] = '';
     }
@@ -165,7 +165,7 @@ collectionsData.forEach(collection => {
             element['id'] = count1;
         }
         if (_.isEmpty(element.name)) {
-            element['name'] = collection.name + ' #' + element.id;
+            element['name'] = collection.id + ' #' + element.id;
         }
         if (!element.name.includes('#'+element.id)) {
             element['name'] = element['name'] + ' #' + (count1 + config.collection_id_from);
@@ -329,7 +329,7 @@ collectionsData.forEach(collection => {
             element['id'] = count2;
         }
     
-        console.log("Analyze punk: #" + element.id);
+        console.log("Analyze punk: #" + collection.id+" #" + element.id);
     
         let thisPunkTraitTypes = [];
         let thisPunkDetailTraits = {};
@@ -416,7 +416,7 @@ collectionsData.forEach(collection => {
         count2 = count2 + 1;
     });
     
-    const punkScoreStmt = db.prepare('SELECT rarity_sum FROM '+collection.name+'_ punk_scores WHERE punk_id = ?');
+    const punkScoreStmt = db.prepare('SELECT rarity_sum FROM '+collection.name+'_punk_scores WHERE punk_id = ?');
     const punkRankStmt = db.prepare('SELECT COUNT(id) as higherRank FROM '+collection.name+'_punk_scores WHERE rarity_sum > ?');
     let updatPunkRankStmt = db.prepare("UPDATE "+collection.name+"_punk_scores SET rarity_rank = :rarity_rank WHERE punk_id = :punk_id");
     
@@ -429,7 +429,7 @@ collectionsData.forEach(collection => {
             element['id'] = count3;
         }
     
-        console.log("Ranking punk: #" + element.id);
+        console.log("Ranking punk: #" + collection.id+" #" + element.id);
         let punkScore = punkScoreStmt.get(element.id);
         let punkRank = punkRankStmt.get(punkScore.rarity_sum);
         updatPunkRankStmt.run({
