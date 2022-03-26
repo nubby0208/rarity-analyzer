@@ -52,7 +52,7 @@ db.exec(
         "animation_url TEXT " +
     ")"
 );
-let insertCollectionStmt = db.prepare("INSERT INTO collections VALUES (?, ?, ?, ?, ?, ?)");
+let insertCollectionStmt = db.prepare("INSERT INTO collections VALUES (?, ?, ?, ?, ?, ?, ?)");
 let collections_count1 = config.collections_id_from;
 collectionsData.forEach(collection => {
 
@@ -138,7 +138,7 @@ collectionsData.forEach(collection => {
         "CREATE TABLE " +
         collection.name+"_punk_trait_counts"+ 
             "(" +    
-        "trait_count INT, " +
+            "trait_count INT, " +
             "punk_count INT " +
         ")"
     );
@@ -183,7 +183,6 @@ collectionsData.forEach(collection => {
         console.log("Prepare punk: #" + element.id);
         
         insertPunkStmt.run(element.id, element.name, element.description, element.image, element.external_url, element.animation_url);
-    
     
         let thisPunkTraitTypes = [];
     
@@ -306,8 +305,8 @@ collectionsData.forEach(collection => {
         insertPunkTraitContStmt.run(countType, thisTypeCount);
     }
     
-    let createScoreTableStmt = "CREATE TABLE punk_scores ( id INT, punk_id INT, ";
-    let insertPunkScoreStmt = "INSERT INTO punk_scores VALUES (:id, :punk_id, ";
+    let createScoreTableStmt = "CREATE TABLE "+collection.name+"_punk_scores ( id INT, punk_id INT, ";
+    let insertPunkScoreStmt = "INSERT INTO "+collection.name+"_punk_scores VALUES (:id, :punk_id, ";
     
     for (let i = 0; i < traitTypeId; i++) {
         createScoreTableStmt = createScoreTableStmt + "trait_type_" + i + "_percentile DOUBLE, trait_type_" + i + "_rarity DOUBLE, trait_type_" + i + "_value TEXT, ";
@@ -417,9 +416,9 @@ collectionsData.forEach(collection => {
         count2 = count2 + 1;
     });
     
-    const punkScoreStmt = db.prepare('SELECT rarity_sum FROM punk_scores WHERE punk_id = ?');
-    const punkRankStmt = db.prepare('SELECT COUNT(id) as higherRank FROM punk_scores WHERE rarity_sum > ?');
-    let updatPunkRankStmt = db.prepare("UPDATE punk_scores SET rarity_rank = :rarity_rank WHERE punk_id = :punk_id");
+    const punkScoreStmt = db.prepare('SELECT rarity_sum FROM '+collection.name+'_ punk_scores WHERE punk_id = ?');
+    const punkRankStmt = db.prepare('SELECT COUNT(id) as higherRank FROM '+collection.name+'_punk_scores WHERE rarity_sum > ?');
+    let updatPunkRankStmt = db.prepare("UPDATE "+collection.name+"_punk_scores SET rarity_rank = :rarity_rank WHERE punk_id = :punk_id");
     
     let count3 = config.collection_id_from;
     collectionData.forEach(element => {
