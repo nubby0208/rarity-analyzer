@@ -1,8 +1,8 @@
     [
     {
   "creator": "Dr.Satoshi",
-  "category": "Digital Art","name": "DNA HEDERA #1",
-
+  "category": "Digital Art",
+  "name": "DNA HEDERA #1",
   "description": "DNA Cultura HEDERA is a unique collection created especially for the Hedera Hashgraph, weird NFTS cutouts from various projects and iconic characters, randomly generated digital collectibles of strange rarity. We celebrate the NFT Space. This is a Homage to all projects",
   "image": "ipfs://QmdkuFKCrP42hU7UfY2RgPF19YkpGDD7Z62nAFLHvUoFKU/1.png", 
   "dna": "46b4d90188b08ab747dab5fd214f78315042bd00", 
@@ -43,7 +43,8 @@
 }, 
     { 
   "creator": "Dr.Satoshi",
-  "category": "Digital Art","name": "DNA HEDERA #2",
+  "category": "Digital Art",
+  "name": "DNA HEDERA #2",
 
   "description": "DNA Cultura HEDERA is a unique collection created especially for the Hedera Hashgraph, weird NFTS cutouts from various projects and iconic characters, randomly generated digital collectibles of strange rarity. We celebrate the NFT Space. This is a Homage to all projects","image": "ipfs://QmdkuFKCrP42hU7UfY2RgPF19YkpGDD7Z62nAFLHvUoFKU/2.png", "dna": "23d8c13580625846c727b669a6d60c4d139a4d6b",  "edition": 2,  "date": 1646006423,  "properties": {
     "extras": [
