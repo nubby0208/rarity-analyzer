@@ -39,7 +39,7 @@ router.get('/', function(req, res, next) {
   collections = db.prepare(collectionsQuery).all();
   let totalPage =  Math.ceil(totalCollectionCount/limit);
 
-  res.render('collections', {
+  res.render('index', {
     appTitle: config.app_name,
     appDescription: config.app_description,
     ogTitle: config.collection_name + ' | ' + config.app_name,
