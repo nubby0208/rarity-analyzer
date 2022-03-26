@@ -16,6 +16,8 @@ if (!fs.existsSync(databasePath)) {
 
 const db = new Database(databasePath);
 
+let collectionName = "DNAHEDERA";
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
@@ -36,10 +38,15 @@ router.get('/', function(req, res, next) {
     traits = '';
   }
 
-  let scoreTable = 'punk_scores';
+  let punksTable = collectionName+"_"+"punks";
+  let trait_typesTable = collectionName+"_"+"trait_types";
+  let trait_detail_typesTable = collectionName+"_"+"trait_detail_types";
+  let punk_trait_countsTable = collectionName+"_"+"punk_trait_counts";
+
+  let scoreTable = collectionName+"_"+'punk_scores';
   if (useTraitNormalization == '1') {
     useTraitNormalization = '1';
-    scoreTable = 'normalized_punk_scores';
+    scoreTable = collectionName+"_"+'normalized_punk_scores';
   } else {
     useTraitNormalization = '0';
   }
@@ -68,28 +75,28 @@ router.get('/', function(req, res, next) {
   if (orderBy == 'rarity') {
     orderByStmt = 'ORDER BY '+scoreTable+'.rarity_rank ASC';
   } else {
-    orderByStmt = 'ORDER BY punks.id ASC';
+    orderByStmt = 'ORDER BY '+punkTable+'.id ASC';
   }
 
-  let totalSupply = db.prepare('SELECT COUNT(punks.id) as punk_total FROM punks').get().punk_total;
-  let allTraitTypes = db.prepare('SELECT trait_types.* FROM trait_types').all();
+  let totalSupply = db.prepare('SELECT COUNT('+punkTable+'.id) as punk_total FROM '+punkTable).get().punk_total;
+  let allTraitTypes = db.prepare('SELECT '+trait_typesTable+'.* FROM '+trait_typesTable).all();
   let allTraitTypesData = {};
   allTraitTypes.forEach(traitType => {
     allTraitTypesData[traitType.trait_type] = traitType.punk_count;
   });
 
-  let allTraits = db.prepare('SELECT trait_types.trait_type, trait_detail_types.trait_detail_type, trait_detail_types.punk_count, trait_detail_types.trait_type_id, trait_detail_types.id trait_detail_type_id  FROM trait_detail_types INNER JOIN trait_types ON (trait_detail_types.trait_type_id = trait_types.id) WHERE trait_detail_types.punk_count != 0 ORDER BY trait_types.trait_type, trait_detail_types.trait_detail_type').all();
-  let totalPunkCountQuery = 'SELECT COUNT(punks.id) as punk_total FROM punks INNER JOIN '+scoreTable+' ON (punks.id = '+scoreTable+'.punk_id) ';
-  let punksQuery = 'SELECT punks.*, '+scoreTable+'.rarity_rank FROM punks INNER JOIN '+scoreTable+' ON (punks.id = '+scoreTable+'.punk_id) ';
+  let allTraits = db.prepare('SELECT '+trait_typesTable+'.trait_type, '+trait_detail_typesTable+'.trait_detail_type, '+trait_typesTable+'.punk_count, '+trait_detail_typesTable+'.trait_type_id, '+trait_detail_typesTable+'.id trait_detail_type_id  FROM '+trait_detail_typesTable+' INNER JOIN '+trait_typesTable+' ON ('+trait_detail_typesTable+'.trait_type_id = '+trait_typesTable+'.id) WHERE '+trait_detail_typesTable+'.punk_count != 0 ORDER BY '+trait_typesTable+'.trait_type, '+trait_detail_typesTable+'.trait_detail_type').all();
+  let totalPunkCountQuery = 'SELECT COUNT('+punkTable+'.id) as punk_total FROM '+punkTable+' INNER JOIN '+scoreTable+' ON ('+punksTable+'.id = '+scoreTable+'.punk_id) ';
+  let punksQuery = 'SELECT '+punksTable+'.*, '+scoreTable+'.rarity_rank FROM '+punksTable+' INNER JOIN '+scoreTable+' ON ('+punksTable+'.id = '+scoreTable+'.punk_id) ';
   let totalPunkCountQueryValue = {};
   let punksQueryValue = {};
 
   if (!_.isEmpty(search)) {
     search = parseInt(search);
-    totalPunkCountQuery = totalPunkCountQuery+' WHERE punks.id LIKE :punk_id ';
+    totalPunkCountQuery = totalPunkCountQuery+' WHERE '+punksTable+'.id LIKE :punk_id ';
     totalPunkCountQueryValue['punk_id'] = '%'+search+'%';
 
-    punksQuery = punksQuery+' WHERE punks.id LIKE :punk_id ';
+    punksQuery = punksQuery+' WHERE '+punksTable+'.id LIKE :punk_id ';
     punksQueryValue['punk_id'] = '%'+search+'%';
   } else {
     totalPunkCount = totalPunkCount;
@@ -174,9 +181,9 @@ router.get('/', function(req, res, next) {
 
 router.get('/traits', function(req, res, next) {
 
-  let allTraits = db.prepare('SELECT trait_types.trait_type, trait_detail_types.trait_detail_type, trait_detail_types.punk_count FROM trait_detail_types INNER JOIN trait_types ON (trait_detail_types.trait_type_id = trait_types.id) WHERE trait_detail_types.punk_count != 0 ORDER BY trait_types.trait_type, trait_detail_types.trait_detail_type').all();
-  let allTraitCounts = db.prepare('SELECT * FROM punk_trait_counts WHERE punk_count != 0 ORDER BY trait_count').all();
-  let totalPunkCount = db.prepare('SELECT COUNT(id) as punk_total FROM punks').get().punk_total;
+  let allTraits = db.prepare('SELECT '+trait_typesTable+'.trait_type, '+trait_detail_typesTable+'.trait_detail_type, '+trait_detail_typesTable+'.punk_count FROM '+trait_detail_typesTable+' INNER JOIN '+trait_typesTable+' ON ('+trait_detail_typesTable+'.trait_type_id = '+trait_typesTable+'.id) WHERE '+trait_detail_typesTable+'.punk_count != 0 ORDER BY '+trait_typesTable+'.trait_type, '+trait_detail_typesTable+'.trait_detail_type').all();
+  let allTraitCounts = db.prepare('SELECT * FROM '+punk_trait_countsTable+' WHERE punk_count != 0 ORDER BY trait_count').all();
+  let totalPunkCount = db.prepare('SELECT COUNT(id) as punk_total FROM '+punksTable+'').get().punk_total;
 
   res.render('traits', {
     appTitle: config.app_name,
@@ -201,10 +208,10 @@ router.get('/wallet', function(req, res, next) {
     search = '';
   }
 
-  let scoreTable = 'punk_scores';
+  let scoreTable = collectionName + 'punk_scores';
   if (useTraitNormalization == '1') {
     useTraitNormalization = '1';
-    scoreTable = 'normalized_punk_scores';
+    scoreTable = collectionName + 'normalized_punk_scores';
   } else {
     useTraitNormalization = '0';
   }
@@ -221,7 +228,7 @@ router.get('/wallet', function(req, res, next) {
       tokenIds.push(element.token_id);
     });
     if (tokenIds.length > 0) {
-      let punksQuery = 'SELECT punks.*, '+scoreTable+'.rarity_rank FROM punks INNER JOIN '+scoreTable+' ON (punks.id = '+scoreTable+'.punk_id) WHERE punks.id IN ('+tokenIds.join(',')+') ORDER BY '+scoreTable+'.rarity_rank ASC';
+      let punksQuery = 'SELECT '+punksTable+'.*, '+scoreTable+'.rarity_rank FROM '+punksTable+' INNER JOIN '+scoreTable+' ON ('+punksTable+'.id = '+scoreTable+'.punk_id) WHERE '+punksTable+'.id IN ('+tokenIds.join(',')+') ORDER BY '+scoreTable+'.rarity_rank ASC';
       punks = db.prepare(punksQuery).all();
     }
   }
