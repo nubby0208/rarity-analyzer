@@ -52,7 +52,7 @@ db.exec(
         "animation_url TEXT " +
     ")"
 );
-let insertCollectionStmt = db.prepare("INSERT INTO collections VALUES (?, ?, ?, ?, ?)");
+let insertCollectionStmt = db.prepare("INSERT INTO collections VALUES (?, ?, ?, ?, ?, ?)");
 let collections_count1 = config.collections_id_from;
 collectionsData.forEach(collection => {
 
