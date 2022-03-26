@@ -39,10 +39,9 @@ app.locals.content_image_frame = config.content_image_frame;
 app.locals.item_path_name = config.item_path_name;
 app.locals.use_wallet = config.use_wallet;
 
-
-app.use('/', indexRouter);
-app.use('/'+config.collection_path_name, indexRouter);
-app.use('/'+config.item_path_name, punksRouter);
+app.use('/', collectionsRouter);
+app.use('/'+ config.collection_path_name, indexRouter);
+app.use('/'+ config.item_path_name, punksRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
