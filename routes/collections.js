@@ -19,22 +19,9 @@ const db = new Database(databasePath);
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-  let search = req.query.search;
-  let useTraitNormalization = req.query.trait_normalization;
-  let orderBy = req.query.order_by;
-  let page = req.query.page;
-
-  let offset = 0;
-  let limit = config.page_item_num;
-
-  if (_.isEmpty(search)) {
-    search = '';
-  }
-
   let totalCollectionCount = db.prepare('SELECT COUNT(collections.id) as collection_total FROM collections').get().collection_total;
 
   let collectionsQuery = 'SELECT collections.* FROM collections';
-  
   
   collections = db.prepare(collectionsQuery).all();
   let totalPage =  Math.ceil(totalCollectionCount/limit);

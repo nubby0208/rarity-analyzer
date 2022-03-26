@@ -40,7 +40,7 @@ app.locals.item_path_name = config.item_path_name;
 app.locals.use_wallet = config.use_wallet;
 
 
-app.use('/', collectionsRouter);
+app.use('/', indexRouter);
 app.use('/'+config.collection_path_name, indexRouter);
 app.use('/'+config.item_path_name, punksRouter);
 
