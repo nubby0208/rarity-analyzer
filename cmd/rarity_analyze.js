@@ -68,9 +68,9 @@ collectionsData.forEach(collection => {
     if (_.isEmpty(collection.name)) {
         collection['name'] = config.collection_name + ' #' + collection.id;
     }
-    if (!collection.name.includes('#'+collection.id)) {
-        collection['name'] = collection['name'] + ' #' + (collections_count1 + config.collections_id_from);
-    }
+    // if (!collection.name.includes('#'+collection.id)) {
+    //     collection['name'] = collection['name'] + ' #' + (collections_count1 + config.collections_id_from);
+    // }
     if (_.isEmpty(collection.description)) {
         collection['description'] = '';
     }
