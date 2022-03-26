@@ -167,9 +167,9 @@ collectionsData.forEach(collection => {
         if (_.isEmpty(element.name)) {
             element['name'] = collection.id + ' #' + element.id;
         }
-        // if (!element.name.includes('#'+element.id)) {
-        //     element['name'] = element['name'] + ' #' + (count1 + config.collection_id_from);
-        // }
+        if (!element.name.includes('#'+element.id)) {
+            element['name'] = element['name'] + ' #' + (count1 + config.collection_id_from);
+        }
         if (_.isEmpty(element.description)) {
             element['description'] = '';
         }
@@ -180,7 +180,7 @@ collectionsData.forEach(collection => {
             element['animation_url'] = '';
         }
     
-        console.log("Prepare punk: # " + element.name);
+        console.log("Prepare punk: #"+collection.id+" #" + element.name);
         
         insertPunkStmt.run(element.id, element.name, element.description, element.image, element.external_url, element.animation_url);
     
