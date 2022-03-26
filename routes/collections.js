@@ -24,6 +24,8 @@ router.get('/', function(req, res, next) {
   let collectionsQuery = 'SELECT collections.* FROM collections';
   
   collections = db.prepare(collectionsQuery).all();
+
+  let limit = config.page_item_num;
   let totalPage =  Math.ceil(totalCollectionCount/limit);
 
   res.render('index', {
