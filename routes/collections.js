@@ -39,9 +39,9 @@ router.get('/', function(req, res, next) {
     collections: collections, 
     totalCollectionCount: totalCollectionCount,
     totalPage: totalPage, 
-    search: search,
-    orderBy: orderBy,
-    page: page,
+    // search: search,
+    // orderBy: orderBy,
+    // page: page,
     _:_ 
   });
 });
