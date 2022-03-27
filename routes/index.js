@@ -16,15 +16,17 @@ if (!fs.existsSync(databasePath)) {
 
 const db = new Database(databasePath);
 
-let collectionName = "DNAHEDERA";
-let punksTable = collectionName+"_"+"punks";
-let trait_typesTable = collectionName+"_"+"trait_types";
-let trait_detail_typesTable = collectionName+"_"+"trait_detail_types";
-let punk_trait_countsTable = collectionName+"_"+"punk_trait_counts";
-let scoreTable = collectionName+"_"+'punk_scores';
+
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/:name', function(req, res, next) {
+
+  let collectionName = req.params.name;
+  let punksTable = collectionName+"_"+"punks";
+  let trait_typesTable = collectionName+"_"+"trait_types";
+  let trait_detail_typesTable = collectionName+"_"+"trait_detail_types";
+  let punk_trait_countsTable = collectionName+"_"+"punk_trait_counts";
+  let scoreTable = collectionName+"_"+'punk_scores';
 
   let search = req.query.search;
   let traits = req.query.traits;
@@ -179,7 +181,13 @@ router.get('/', function(req, res, next) {
   });
 });
 
-router.get('/traits', function(req, res, next) {
+router.get('/:name/traits', function(req, res, next) {
+  let collectionName = req.params.name;
+  let punksTable = collectionName+"_"+"punks";
+  let trait_typesTable = collectionName+"_"+"trait_types";
+  let trait_detail_typesTable = collectionName+"_"+"trait_detail_types";
+  let punk_trait_countsTable = collectionName+"_"+"punk_trait_counts";
+  let scoreTable = collectionName+"_"+'punk_scores';
 
   let allTraits = db.prepare('SELECT '+trait_typesTable+'.trait_type, '+trait_detail_typesTable+'.trait_detail_type, '+trait_detail_typesTable+'.punk_count FROM '+trait_detail_typesTable+' INNER JOIN '+trait_typesTable+' ON ('+trait_detail_typesTable+'.trait_type_id = '+trait_typesTable+'.id) WHERE '+trait_detail_typesTable+'.punk_count != 0 ORDER BY '+trait_typesTable+'.trait_type, '+trait_detail_typesTable+'.trait_detail_type').all();
   let allTraitCounts = db.prepare('SELECT * FROM '+punk_trait_countsTable+' WHERE punk_count != 0 ORDER BY trait_count').all();
@@ -200,7 +208,14 @@ router.get('/traits', function(req, res, next) {
   });
 });
 
-router.get('/wallet', function(req, res, next) {
+router.get('/:name/wallet', function(req, res, next) {
+  let collectionName = req.params.name;
+  let punksTable = collectionName+"_"+"punks";
+  let trait_typesTable = collectionName+"_"+"trait_types";
+  let trait_detail_typesTable = collectionName+"_"+"trait_detail_types";
+  let punk_trait_countsTable = collectionName+"_"+"punk_trait_counts";
+  let scoreTable = collectionName+"_"+'punk_scores';
+
   let search = req.query.search;
   let useTraitNormalization = req.query.trait_normalization;
 
@@ -208,7 +223,6 @@ router.get('/wallet', function(req, res, next) {
     search = '';
   }
 
-  let scoreTable = collectionName + 'punk_scores';
   if (useTraitNormalization == '1') {
     useTraitNormalization = '1';
     scoreTable = collectionName + 'normalized_punk_scores';
