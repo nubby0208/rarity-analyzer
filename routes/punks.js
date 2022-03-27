@@ -16,15 +16,14 @@ if (!fs.existsSync(databasePath)) {
 }
 
 const db = new Database(databasePath);
-
+let collectionName = "DNAHEDERA";
 let punksTable = collectionName+"_"+"punks";
 let trait_typesTable = collectionName+"_"+"trait_types";
 let trait_detail_typesTable = collectionName+"_"+"trait_detail_types";
 let punk_trait_countsTable = collectionName+"_"+"punk_trait_counts";
 let punk_traitsTable = collectionName+"_"+"punk_traits";
 /* GET punks listing. */
-router.get('/:collectionName/:id', function(req, res, next) {
-  let collectionName = req.params.collectionName;
+router.get('/:id', function(req, res, next) {
   let punkId = req.params.id;
   let useTraitNormalization = req.query.trait_normalization;
 
