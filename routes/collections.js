@@ -19,7 +19,16 @@ const db = new Database(databasePath);
 /* GET home page. */
 router.get('/', function(req, res, next) {
   let page = req.query.page;
-
+  let search = req.query.search;
+  let orderBy = req.query.order_by;
+  if (_.isEmpty(search)) {
+    search = '';
+  }
+  if (orderBy == 'rarity' || orderBy == 'id') {
+    orderBy = orderBy;
+  } else {
+    orderBy = 'rarity';
+  }
   if (!_.isEmpty(page)) {
     page = parseInt(page);
     if (!isNaN(page)) {
@@ -51,8 +60,8 @@ router.get('/', function(req, res, next) {
     collections: collections, 
     totalCollectionCount: totalCollectionCount,
     totalPage: totalPage, 
-    // search: search,
-    // orderBy: orderBy,
+    search: search,
+    orderBy: orderBy,
     page: page,
     _:_ 
   });
