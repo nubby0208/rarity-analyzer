@@ -418,6 +418,17 @@ a:hover .punk-info svg:not(.shadow) {
   line-height: 50px;
 }
 
+.c-h-container {
+  height: 50px;
+  width: 50%;
+}
+
+.c-h-container-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+} 
+
 .view-on-icon {
   width: 24px;
   height: 24px;
