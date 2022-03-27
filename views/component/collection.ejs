@@ -1,22 +1,9 @@
 <%
 let tokenCollectionUrl = collection.id;
-if (trait_normalization == 1) {
-  tokenCollectionUrl = collection.id+'?trait_normalization=1';
-}
 %>
 <a href="/<%= collection_path_name %>/<%= tokenCollectionUrl %>" style="text-decoration: none;">
   <div>
-    <% if (collection.rarity_rank) { %>
-    <h3 class="punk-rank">Rank #<%= collection.rarity_rank %></h3>
-    <% } %>
-    <% if (collection.similar) { %>
-    <h3 class="punk-similar-score">Similar Score #<%= collection.similar.toFixed(2) %></h3>
-    <% } %>
-    <% if (content_image_is_video) { %>
-    <video class="punk-avatar" style="<% if (content_image_frame=='rectangle') { %> border-radius: 10px; <% } %>" src="<%= collection.image.replace('ipfs://', 'https://ipfs.io/ipfs/'); %>" alt="<%= collection.name %>" /></video>
-    <% } else { %>
     <img class="punk-avatar" style="<% if (content_image_frame=='rectangle') { %> border-radius: 10px; <% } %>" src="<%= collection.image.replace('ipfs://', 'https://ipfs.io/ipfs/'); %>" alt="<%= collection.name %>" />
-    <% } %>
     <div class="punk-info text-center">
       <span><%= collection.name %></span>
       <svg 
