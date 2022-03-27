@@ -97,7 +97,7 @@
           <% if (!_.isEmpty(punks)) { %>
             <% punks.forEach(function(punk) { %>
               <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-5" style="padding-left: 30px; padding-right: 30px;">
-                <%- include('./component/punk', {punk: punk, trait_normalization: useTraitNormalization}); -%>
+                <%- include('./component/punk', {punk: punk, collectionName: collectionName, trait_normalization: useTraitNormalization}); -%>
               </div>
             <% }); %>
           <% } else { %>

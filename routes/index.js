@@ -165,6 +165,7 @@ router.get('/:name', function(req, res, next) {
     ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
     ogImage: config.main_og_image,
     activeTab: 'rarity',
+    collectionName: collectionName,
     punks: punks, 
     totalPunkCount: totalPunkCount,
     totalPage: totalPage, 
@@ -180,6 +181,7 @@ router.get('/:name', function(req, res, next) {
     _:_ 
   });
 });
+
 
 router.get('/:name/traits', function(req, res, next) {
   let collectionName = req.params.name;

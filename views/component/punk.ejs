@@ -3,8 +3,9 @@ let tokenItemUrl = punk.id;
 if (trait_normalization == 1) {
   tokenItemUrl = punk.id+'?trait_normalization=1';
 }
+
 %>
-<a href="/<%= item_path_name %>/<%= tokenItemUrl %>" style="text-decoration: none;">
+<a href="/<%= item_path_name %>/<%= collectionName %>/<%= tokenItemUrl %>" style="text-decoration: none;">
   <div>
     <% if (punk.rarity_rank) { %>
     <h3 class="punk-rank">Rank #<%= punk.rarity_rank %></h3>
