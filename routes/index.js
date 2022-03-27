@@ -182,7 +182,6 @@ router.get('/:name', function(req, res, next) {
   });
 });
 
-
 router.get('/:name/traits', function(req, res, next) {
   let collectionName = req.params.name;
   let punksTable = collectionName+"_"+"punks";
@@ -202,6 +201,7 @@ router.get('/:name/traits', function(req, res, next) {
     ogDescription: config.collection_description + ' | ' + config.app_description,
     ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
     ogImage: config.main_og_image,
+    collectionName: collectionName,
     activeTab: 'traits',
     allTraits: allTraits,
     allTraitCounts: allTraitCounts,
@@ -257,6 +257,7 @@ router.get('/:name/wallet', function(req, res, next) {
     ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
     ogImage: config.main_og_image,
     activeTab: 'wallet',
+    collectionName: collectionName,
     punks: punks,
     search: search, 
     useTraitNormalization: useTraitNormalization,

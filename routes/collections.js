@@ -63,7 +63,7 @@ router.get('/', function(req, res, next) {
     search: search,
     orderBy: orderBy,
     page: page,
-    _:_ 
+    _:_
   });
 });
 
