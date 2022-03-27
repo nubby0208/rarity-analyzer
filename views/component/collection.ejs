@@ -1,7 +1,7 @@
 <%
 let tokenCollectionUrl = collection.id;
 %>
-<a href="/<%= collection.name %>/<%= tokenCollectionUrl %>" style="text-decoration: none;">
+<a href="/<%= collection_path_name %>/<%= tokenCollectionUrl %>" style="text-decoration: none;">
   <div>
     <img class="punk-avatar" style="<% if (content_image_frame=='rectangle') { %> border-radius: 10px; <% } %>" src="<%= collection.image.replace('ipfs://', 'https://ipfs.io/ipfs/'); %>" alt="<%= collection.name %>" />
     <div class="punk-info text-center">
