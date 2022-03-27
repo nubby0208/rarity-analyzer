@@ -22,7 +22,7 @@ let punksTable = collectionName+"_"+"punks";
 let trait_typesTable = collectionName+"_"+"trait_types";
 let trait_detail_typesTable = collectionName+"_"+"trait_detail_types";
 let punk_trait_countsTable = collectionName+"_"+"punk_trait_counts";
-
+let punk_traitsTable = collectionName+"_"+"punk_traits";
 /* GET punks listing. */
 router.get('/:id', function(req, res, next) {
   let punkId = req.params.id;
@@ -42,7 +42,7 @@ router.get('/:id', function(req, res, next) {
   let allDetailTraitTypes = db.prepare('SELECT '+trait_detail_typesTable+'.* FROM '+trait_detail_typesTable).all();
   let allTraitCountTypes = db.prepare('SELECT '+punk_trait_countsTable+'.* FROM '+punk_trait_countsTable).all();
 
-  let punkTraits = db.prepare('SELECT punk_traits.*, '+trait_typesTable+'.trait_type  FROM punk_traits INNER JOIN '+trait_typesTable+' ON (punk_traits.trait_type_id = '+trait_typesTable+'.id) WHERE punk_traits.punk_id = ?').all(punkId);
+  let punkTraits = db.prepare('SELECT '+punk_traitsTable+'.*, '+trait_typesTable+'.trait_type  FROM '+punk_traitsTable+' INNER JOIN '+trait_typesTable+' ON ('+punk_traitsTable+'.trait_type_id = '+trait_typesTable+'.id) WHERE '+punk_traitsTable+'.punk_id = ?').all(punkId);
   let totalPunkCount = db.prepare('SELECT COUNT(id) as punk_total FROM '+punksTable+'').get().punk_total;
 
   let punkTraitData = {};
