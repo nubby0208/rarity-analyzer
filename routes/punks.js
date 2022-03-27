@@ -17,27 +17,33 @@ if (!fs.existsSync(databasePath)) {
 
 const db = new Database(databasePath);
 
+let collectionName = "DNAHEDERA";
+let punksTable = collectionName+"_"+"punks";
+let trait_typesTable = collectionName+"_"+"trait_types";
+let trait_detail_typesTable = collectionName+"_"+"trait_detail_types";
+let punk_trait_countsTable = collectionName+"_"+"punk_trait_counts";
+
 /* GET punks listing. */
 router.get('/:id', function(req, res, next) {
   let punkId = req.params.id;
   let useTraitNormalization = req.query.trait_normalization;
 
-  let scoreTable = 'punk_scores';
+  let scoreTable = collectionName+"_"+'punk_scores';
   if (useTraitNormalization == '1') {
     useTraitNormalization = '1';
-    scoreTable = 'normalized_punk_scores';
+    scoreTable = collectionName+"_"+'normalized_punk_scores';
   } else {
     useTraitNormalization = '0';
   }
 
-  let punk = db.prepare('SELECT punks.*, '+scoreTable+'.rarity_rank FROM punks INNER JOIN '+scoreTable+' ON (punks.id = '+scoreTable+'.punk_id) WHERE punks.id = ?').get(punkId);
+  let punk = db.prepare('SELECT '+punksTable+'.*, '+scoreTable+'.rarity_rank FROM '+punksTable+' INNER JOIN '+scoreTable+' ON ('+punksTable+'.id = '+scoreTable+'.punk_id) WHERE '+punksTable+'.id = ?').get(punkId);
   let punkScore = db.prepare('SELECT '+scoreTable+'.* FROM '+scoreTable+' WHERE '+scoreTable+'.punk_id = ?').get(punkId);
-  let allTraitTypes = db.prepare('SELECT trait_types.* FROM trait_types').all();
-  let allDetailTraitTypes = db.prepare('SELECT trait_detail_types.* FROM trait_detail_types').all();
-  let allTraitCountTypes = db.prepare('SELECT punk_trait_counts.* FROM punk_trait_counts').all();
+  let allTraitTypes = db.prepare('SELECT '+trait_typesTable+'.* FROM '+trait_typesTable).all();
+  let allDetailTraitTypes = db.prepare('SELECT '+trait_detail_typesTable+'.* FROM '+trait_detail_typesTable).all();
+  let allTraitCountTypes = db.prepare('SELECT '+punk_trait_countsTable+'.* FROM '+punk_trait_countsTable).all();
 
-  let punkTraits = db.prepare('SELECT punk_traits.*, trait_types.trait_type  FROM punk_traits INNER JOIN trait_types ON (punk_traits.trait_type_id = trait_types.id) WHERE punk_traits.punk_id = ?').all(punkId);
-  let totalPunkCount = db.prepare('SELECT COUNT(id) as punk_total FROM punks').get().punk_total;
+  let punkTraits = db.prepare('SELECT punk_traits.*, '+trait_typesTable+'.trait_type  FROM punk_traits INNER JOIN '+trait_typesTable+' ON (punk_traits.trait_type_id = '+trait_typesTable+'.id) WHERE punk_traits.punk_id = ?').all(punkId);
+  let totalPunkCount = db.prepare('SELECT COUNT(id) as punk_total FROM '+punksTable+'').get().punk_total;
 
   let punkTraitData = {};
   let ignoredPunkTraitData = {};
@@ -96,15 +102,15 @@ router.get('/:id/json', function(req, res, next) {
   let punkId = req.params.id;
   let useTraitNormalization = req.query.trait_normalization;
 
-  let scoreTable = 'punk_scores';
+  let scoreTable = collectionName+"_"+'punk_scores';
   if (useTraitNormalization == '1') {
     useTraitNormalization = '1';
-    scoreTable = 'normalized_punk_scores';
+    scoreTable = collectionName+"_"+'normalized_punk_scores';
   } else {
     useTraitNormalization = '0';
   }
 
-  let punk = db.prepare('SELECT punks.*, '+scoreTable+'.rarity_rank FROM punks INNER JOIN '+scoreTable+' ON (punks.id = '+scoreTable+'.punk_id) WHERE punks.id = ?').get(punkId);
+  let punk = db.prepare('SELECT '+punksTable+'.*, '+scoreTable+'.rarity_rank FROM '+punksTable+' INNER JOIN '+scoreTable+' ON ('+punksTable+'.id = '+scoreTable+'.punk_id) WHERE '+punksTable+'.id = ?').get(punkId);
   
   if (_.isEmpty(punk)) {
     res.end(JSON.stringify({
@@ -127,17 +133,17 @@ router.get('/:id/similar', function(req, res, next) {
   let punkId = req.params.id;
   let useTraitNormalization = req.query.trait_normalization;
 
-  let scoreTable = 'punk_scores';
+  let scoreTable = collectionName+"_"+'punk_scores';
   if (useTraitNormalization == '1') {
     useTraitNormalization = '1';
-    scoreTable = 'normalized_punk_scores';
+    scoreTable = collectionName+"_"+'normalized_punk_scores';
   } else {
     useTraitNormalization = '0';
   }
 
-  let punk = db.prepare('SELECT punks.*, '+scoreTable+'.rarity_rank FROM punks INNER JOIN '+scoreTable+' ON (punks.id = '+scoreTable+'.punk_id) WHERE punks.id = ?').get(punkId);
+  let punk = db.prepare('SELECT '+punksTable+'.*, '+scoreTable+'.rarity_rank FROM '+punksTable+' INNER JOIN '+scoreTable+' ON ('+punksTable+'.id = '+scoreTable+'.punk_id) WHERE '+punksTable+'.id = ?').get(punkId);
   let punkScore = db.prepare('SELECT '+scoreTable+'.* FROM '+scoreTable+' WHERE '+scoreTable+'.punk_id = ?').get(punkId);
-  let allTraitTypes = db.prepare('SELECT trait_types.* FROM trait_types').all();
+  let allTraitTypes = db.prepare('SELECT '+trait_typesTable+'.* FROM '+trait_typesTable).all();
   let similarCondition = '';
   let similarTo = {};
   let similarPunks = null;
@@ -150,7 +156,7 @@ router.get('/:id/similar', function(req, res, next) {
     similarTo['this_punk_id'] = punkId;
     similarPunks = db.prepare(`
       SELECT
-        punks.*,
+      `+punksTable+`.*,
         `+scoreTable+`.punk_id, 
         (
           ` 
@@ -160,7 +166,7 @@ router.get('/:id/similar', function(req, res, next) {
         )
         similar 
       FROM `+scoreTable+`  
-      INNER JOIN punks ON (`+scoreTable+`.punk_id = punks.id)
+      INNER JOIN `+punksTable+` ON (`+scoreTable+`.punk_id = `+punksTable+`.id)
       WHERE `+scoreTable+`.punk_id != :this_punk_id
       ORDER BY similar desc
       LIMIT 12
