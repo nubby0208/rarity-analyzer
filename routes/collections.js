@@ -18,6 +18,18 @@ const db = new Database(databasePath);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  let page = req.query.page;
+
+  if (!_.isEmpty(page)) {
+    page = parseInt(page);
+    if (!isNaN(page)) {
+      offset = (Math.abs(page) - 1) * limit;
+    } else {
+      page = 1;
+    }
+  } else {
+    page = 1;
+  }
 
   let totalCollectionCount = db.prepare('SELECT COUNT(collections.id) as collection_total FROM collections').get().collection_total;
 
@@ -41,7 +53,7 @@ router.get('/', function(req, res, next) {
     totalPage: totalPage, 
     // search: search,
     // orderBy: orderBy,
-    // page: page,
+    page: page,
     _:_ 
   });
 });
