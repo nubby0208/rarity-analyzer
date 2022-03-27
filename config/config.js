@@ -4,7 +4,7 @@ const config = {
     
     //nubby
     collections_file_name: 'collections.json',
-    collection_path_name: 'punk',
+    collection_path_name: 'collection',
     collections_id_from: 0,
     //nubby
     
