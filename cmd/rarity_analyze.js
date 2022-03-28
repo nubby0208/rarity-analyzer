@@ -85,8 +85,6 @@ collectionsData.forEach(collection => {
     }
 
     console.log("Prepare collection: #" + collection.id);
-    
-    collection.name = collection.name + collections_count1;
 
     insertCollectionStmt.run(collection.id, collection.name, collection.title, collection.description, collection.image, collection.external_url, collection.animation_url);
 
