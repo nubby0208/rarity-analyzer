@@ -86,6 +86,8 @@ collectionsData.forEach(collection => {
 
     console.log("Prepare collection: #" + collection.id);
     
+    collection.name = collection.name + collections_count1;
+
     insertCollectionStmt.run(collection.id, collection.name, collection.title, collection.description, collection.image, collection.external_url, collection.animation_url);
 
     db.exec(
@@ -149,7 +151,6 @@ collectionsData.forEach(collection => {
     let insertPuntTraitStmt = db.prepare("INSERT INTO "+collection.name+"_punk_traits VALUES (?, ?, ?, ?)");
     
     //nubby
-    
 
     let count1 = config.collection_id_from;
     const collectionData = require(appRoot + '/config/' + collection.name +'.json');

@@ -33,7 +33,7 @@ if (mode != 'force') {
 let allCollections = db.prepare('SELECT collections.* FROM collections').all();
 allCollections.forEach(collection => {
 
-    
+
 
 
 let allTraitTypes = db.prepare('SELECT '+collection.name+'_trait_types.* FROM '+collection.name+'_trait_types').all();
